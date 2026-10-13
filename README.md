@@ -1,4 +1,5 @@
 # Placement Preparation Portal
+placement-preparation-portal-production.up.railway.app
 **College Java Object-Oriented Programming (OOP) Capstone Project**
 
 A complete, production-ready web application built with **Java 17**, **Spring Boot 3**, **MySQL** (with H2 in-memory test fallback), and a modern, responsive **HTML5/CSS3/JavaScript** frontend.
