@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Preparation Portal | Java OOP Project</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Google Fonts for clean typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="brand" onclick="app.showTab('dashboard')">
+                <div class="brand-icon">🎓</div>
+                <div class="brand-text">
+                    <h1>CampusPrep</h1>
+                    <span class="sub-badge">Java OOP Edition</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links (Visible when logged in) -->
+            <nav id="nav-links" class="nav-links hidden">
+                <button class="nav-btn active" data-tab="dashboard" onclick="app.showTab('dashboard')">📊 Dashboard</button>
+                <button class="nav-btn" data-tab="practice" onclick="app.showTab('practice')">📝 Practice Zone</button>
+                <button class="nav-btn" data-tab="mocktest" onclick="app.showTab('mocktest')">⏱️ Mock Tests</button>
+                <button class="nav-btn" data-tab="results" onclick="app.showTab('results')">📈 Results History</button>
+                <button class="nav-btn" data-tab="eligibility" onclick="app.showTab('eligibility')">🏢 Eligibility Tracker</button>
+                <button class="nav-btn" data-tab="oopguide" onclick="app.showTab('oopguide')">💡 OOP Viva Guide</button>
+                <button id="nav-admin-btn" class="nav-btn hidden" data-tab="admin" onclick="app.showTab('admin')">⚙️ Admin Panel</button>
+            </nav>
+
+            <div class="user-session" id="user-session">
+                <div id="user-badge" class="user-badge hidden">
+                    <span id="user-role-pill" class="badge-pill">STUDENT</span>
+                    <span id="user-name-display" class="user-name">Arun Kumar</span>
+                    <button class="btn btn-outline-danger btn-sm" onclick="app.logout()">Logout</button>
+                </div>
+                <div id="login-nav-prompt">
+                    <button class="btn btn-primary btn-sm" onclick="app.showTab('auth')">Sign In / Register</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+        <!-- Notification Banner -->
+        <div id="alert-banner" class="alert-banner hidden"></div>
+
+        <!-- ======================================================== -->
+        <!-- TAB 1: AUTHENTICATION (LOGIN & REGISTRATION) -->
+        <!-- ======================================================== -->
+        <section id="tab-auth" class="tab-pane active">
+            <div class="auth-hero">
+                <h2>Welcome to Placement Preparation Portal</h2>
+                <p>Sharpen your Aptitude, Logical Reasoning, and Technical Java skills for campus recruitments.</p>
+            </div>
+
+            <div class="auth-wrapper">
+                <!-- Login Card -->
+                <div class="card auth-card">
+                    <div class="card-header">
+                        <h3>Sign In to Your Account</h3>
+                        <p class="text-muted">Enter credentials or use 1-click college demo profiles</p>
+                    </div>
+                    <form id="login-form" onsubmit="app.handleLogin(event)">
+                        <div class="form-group">
+                            <label for="login-email">Email Address</label>
+                            <input type="email" id="login-email" class="form-control" required placeholder="e.g. arun@college.edu">
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" class="form-control" required placeholder="Enter password">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </form>
+
+                    <!-- Quick Demo Credentials for Viva Evaluator -->
+                    <div class="demo-box">
+                        <span class="demo-title">⚡ Quick 1-Click Viva Demo Logins:</span>
+                        <div class="demo-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="app.quickLogin('arun@college.edu', 'student123')">
+                                👨‍🎓 Student: Arun (8.7 CGPA)
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="app.quickLogin('priya@college.edu', 'student123')">
+                                👩‍🎓 Student: Priya (7.4 CGPA)
+                            </button>
+                            <button class="btn btn-sm btn-outline-admin" onclick="app.quickLogin('admin@college.edu', 'admin123')">
+                                🛡️ Admin: Placement Officer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Card -->
+                <div class="card auth-card">
+                    <div class="card-header">
+                        <h3>New Student Registration</h3>
+                        <p class="text-muted">Register your student profile to track placement readiness</p>
+                    </div>
+                    <form id="register-form" onsubmit="app.handleRegister(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reg-name">Full Name *</label>
+                                <input type="text" id="reg-name" class="form-control" required placeholder="e.g. Sanjay Patel">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-roll">Roll Number *</label>
+                                <input type="text" id="reg-roll" class="form-control" required placeholder="e.g. 2024CS45">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reg-email">College Email *</label>
+                                <input type="email" id="reg-email" class="form-control" required placeholder="sanjay@college.edu">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-dept">Department *</label>
+                                <select id="reg-dept" class="form-control" required>
+                                    <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+                                    <option value="Information Technology">Information Technology</option>
+                                    <option value="Electronics & Communication">Electronics & Communication</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Electrical & Electronics">Electrical & Electronics</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reg-cgpa">Current CGPA (0.0 - 10.0) *</label>
+                                <input type="number" id="reg-cgpa" class="form-control" step="0.01" min="0" max="10" required placeholder="e.g. 8.25">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-backlogs">Active Backlogs *</label>
+                                <input type="number" id="reg-backlogs" class="form-control" min="0" required placeholder="e.g. 0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-pass">Create Password *</label>
+                            <input type="password" id="reg-pass" class="form-control" minlength="4" required placeholder="Minimum 4 characters">
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block">Create Student Profile</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 2: STUDENT DASHBOARD -->
+        <!-- ======================================================== -->
+        <section id="tab-dashboard" class="tab-pane hidden">
+            <div class="section-header">
+                <div>
+                    <h2>Placement Preparation Dashboard</h2>
+                    <p class="text-muted" id="dash-greeting">Welcome back, Student Candidate!</p>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="app.showTab('mocktest')">⚡ Start Mock Test</button>
+                    <button class="btn btn-outline" onclick="app.showTab('eligibility')">🏢 Check Eligibility</button>
+                </div>
+            </div>
+
+            <!-- Student Profile Summary Card -->
+            <div class="dashboard-hero-card">
+                <div class="student-avatar">👨‍🎓</div>
+                <div class="student-info">
+                    <h3 id="dash-student-name">Arun Kumar</h3>
+                    <p id="dash-student-meta">Roll: 2024CS01 | Computer Science & Engineering</p>
+                    <div class="tags-row">
+                        <span class="tag tag-blue" id="dash-cgpa-tag">CGPA: 8.75</span>
+                        <span class="tag tag-green" id="dash-backlogs-tag">Backlogs: 0</span>
+                        <span class="tag tag-purple" id="dash-role-tag">Role: Student Candidate</span>
+                    </div>
+                </div>
+                <div class="readiness-meter">
+                    <span class="meter-title">Placement Readiness</span>
+                    <span class="meter-score" id="dash-readiness-pct">85%</span>
+                    <span class="meter-status" id="dash-readiness-label">Ready for Tier-1 Companies</span>
+                </div>
+            </div>
+
+            <!-- Key Performance Metrics Row -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue">📋</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="dash-tests-count">1</span>
+                        <span class="stat-label">Tests Attempted</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-purple">🎯</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="dash-avg-score">85.0%</span>
+                        <span class="stat-label">Average Test Score</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-green">🏆</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="dash-highest-score">85.0%</span>
+                        <span class="stat-label">Highest Score</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-orange">🏢</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="dash-eligible-count">4</span>
+                        <span class="stat-label">Eligible Companies</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Practice Categories & Recent Drives -->
+            <div class="dashboard-two-col">
+                <!-- Practice Tracks -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Practice Categories</h3>
+                        <p class="text-muted">Master essential placement assessment modules</p>
+                    </div>
+                    <div class="track-list">
+                        <div class="track-item" onclick="app.startPracticeWithCategory('APTITUDE')">
+                            <div class="track-icon">📐</div>
+                            <div class="track-content">
+                                <h4>Quantitative Aptitude</h4>
+                                <p>Percentages, Time & Work, Speed, Probability, Profit & Loss</p>
+                            </div>
+                            <span class="btn btn-sm btn-outline">Practice →</span>
+                        </div>
+                        <div class="track-item" onclick="app.startPracticeWithCategory('LOGICAL')">
+                            <div class="track-icon">🧩</div>
+                            <div class="track-content">
+                                <h4>Logical Reasoning</h4>
+                                <p>Number Series, Blood Relations, Coding-Decoding, Syllogisms</p>
+                            </div>
+                            <span class="btn btn-sm btn-outline">Practice →</span>
+                        </div>
+                        <div class="track-item" onclick="app.startPracticeWithCategory('TECHNICAL')">
+                            <div class="track-icon">☕</div>
+                            <div class="track-content">
+                                <h4>Technical Java & OOP</h4>
+                                <p>Encapsulation, Polymorphism, Abstraction, JVM, Interfaces</p>
+                            </div>
+                            <span class="btn btn-sm btn-outline">Practice →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Drives Snapshot -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Campus Drives Snapshot</h3>
+                        <p class="text-muted">Upcoming placement recruitment visits</p>
+                    </div>
+                    <div id="dash-drives-list" class="drive-snapshot-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 3: MCQ PRACTICE ZONE -->
+        <!-- ======================================================== -->
+        <section id="tab-practice" class="tab-pane hidden">
+            <div class="section-header">
+                <div>
+                    <h2>MCQ Practice Zone</h2>
+                    <p class="text-muted">Practice topic-wise questions with instant answer evaluation and deep explanations</p>
+                </div>
+                <!-- Category Filter Buttons -->
+                <div class="filter-group">
+                    <button class="filter-btn active" data-cat="ALL" onclick="app.loadPracticeQuestions('ALL')">All Tracks</button>
+                    <button class="filter-btn" data-cat="APTITUDE" onclick="app.loadPracticeQuestions('APTITUDE')">Aptitude</button>
+                    <button class="filter-btn" data-cat="LOGICAL" onclick="app.loadPracticeQuestions('LOGICAL')">Logical Reasoning</button>
+                    <button class="filter-btn" data-cat="TECHNICAL" onclick="app.loadPracticeQuestions('TECHNICAL')">Technical Java</button>
+                </div>
+            </div>
+
+            <div id="practice-questions-container" class="questions-stream">
+                <!-- Dynamically populated practice questions -->
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 4: TIMED MOCK TEST ENGINE -->
+        <!-- ======================================================== -->
+        <section id="tab-mocktest" class="tab-pane hidden">
+            <!-- Mock Test Setup Panel (Visible before starting test) -->
+            <div id="mock-config-panel" class="card test-config-card">
+                <div class="card-header">
+                    <h2>Launch Timed Mock Assessment</h2>
+                    <p class="text-muted">Simulate actual recruitment online tests under timed constraints with automatic grading.</p>
+                </div>
+                <div class="config-grid">
+                    <div class="form-group">
+                        <label for="mock-category-select">Select Assessment Track</label>
+                        <select id="mock-category-select" class="form-control">
+                            <option value="FULL_MOCK">Full Mock Assessment (Aptitude + Logical + Technical)</option>
+                            <option value="APTITUDE">Quantitative Aptitude Only</option>
+                            <option value="LOGICAL">Logical Reasoning Only</option>
+                            <option value="TECHNICAL">Core Java & OOP Technical Only</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mock-count-select">Number of Questions</label>
+                        <select id="mock-count-select" class="form-control">
+                            <option value="5">5 Questions (Quick Test)</option>
+                            <option value="10">10 Questions (Standard Mock)</option>
+                            <option value="15">15 Questions (Full Test)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mock-duration-select">Test Duration</label>
+                        <select id="mock-duration-select" class="form-control">
+                            <option value="5">5 Minutes</option>
+                            <option value="10">10 Minutes</option>
+                            <option value="15">15 Minutes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="test-rules-box">
+                    <h4>📌 Instructions & OOP Scoring Model:</h4>
+                    <ul>
+                        <li>Each question awards 1 mark. There is no negative marking.</li>
+                        <li>Timer runs continuously in the browser. The test will auto-submit upon timer expiry.</li>
+                        <li>Submissions dynamically invoke polymorphic evaluation on each question class in the Java backend.</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary btn-lg" onclick="app.startMockTest()">🚀 Start Test Now</button>
+            </div>
+
+            <!-- Active Test Running View (Visible during test) -->
+            <div id="mock-running-panel" class="hidden">
+                <div class="test-header-bar">
+                    <div>
+                        <h3 id="active-test-title">Full Mock Placement Assessment</h3>
+                        <span class="text-muted" id="active-test-meta">5 Questions | Active Session</span>
+                    </div>
+                    <div class="timer-badge">
+                        <span class="timer-icon">⏳ Time Remaining:</span>
+                        <span id="test-timer" class="timer-clock">09:59</span>
+                    </div>
+                    <button class="btn btn-danger" onclick="app.confirmSubmitTest()">Submit Test</button>
+                </div>
+
+                <div id="mock-questions-list" class="mock-test-body">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <div class="test-footer-bar">
+                    <button class="btn btn-outline" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Back to Top</button>
+                    <button class="btn btn-success btn-lg" onclick="app.confirmSubmitTest()">Submit & Generate Report</button>
+                </div>
+            </div>
+
+            <!-- Test Results Report View (Visible after test submission) -->
+            <div id="mock-result-panel" class="card result-report-card hidden">
+                <div class="card-header text-center">
+                    <div class="score-icon">🎉</div>
+                    <h2>Assessment Results & Performance Report</h2>
+                    <p class="text-muted" id="res-test-title">Full Mock Assessment</p>
+                </div>
+
+                <div class="result-summary-grid">
+                    <div class="res-stat-card">
+                        <span class="res-val" id="res-score">4 / 5</span>
+                        <span class="res-lbl">Score Obtained</span>
+                    </div>
+                    <div class="res-stat-card">
+                        <span class="res-val" id="res-percentage">80%</span>
+                        <span class="res-lbl">Percentage</span>
+                    </div>
+                    <div class="res-stat-card">
+                        <span class="res-val" id="res-grade">Distinction (A+)</span>
+                        <span class="res-lbl">Performance Grade</span>
+                    </div>
+                    <div class="res-stat-card">
+                        <span class="res-val" id="res-accuracy">4 Correct, 1 Wrong</span>
+                        <span class="res-lbl">Breakdown</span>
+                    </div>
+                </div>
+
+                <!-- Comprehensive Question Review -->
+                <div class="review-section">
+                    <h3>Detailed Question-by-Question Review</h3>
+                    <div id="res-questions-review" class="review-stream">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <div class="text-center" style="margin-top: 24px;">
+                    <button class="btn btn-primary" onclick="app.resetMockTestView()">Take Another Mock Test</button>
+                    <button class="btn btn-outline" onclick="app.showTab('results')">View Results History</button>
+                    <button class="btn btn-outline" onclick="app.showTab('dashboard')">Return to Dashboard</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 5: RESULTS HISTORY & PERFORMANCE TRACKING -->
+        <!-- ======================================================== -->
+        <section id="tab-results" class="tab-pane hidden">
+            <div class="section-header">
+                <div>
+                    <h2>Results History & Performance Tracking</h2>
+                    <p class="text-muted">Detailed log of all tests taken with performance analysis and letter grades</p>
+                </div>
+                <button class="btn btn-primary" onclick="app.showTab('mocktest')">Take New Assessment</button>
+            </div>
+
+            <!-- Performance Metrics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue">📊</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="history-total-tests">0</span>
+                        <span class="stat-label">Total Tests Taken</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-green">🎯</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="history-avg-pct">0.0%</span>
+                        <span class="stat-label">Cumulative Average</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-purple">🌟</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="history-high-pct">0.0%</span>
+                        <span class="stat-label">Highest Score Achieved</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-orange">🎯</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="history-accuracy">0.0%</span>
+                        <span class="stat-label">Overall Accuracy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historical Results Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Assessment Attempt Records</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Assessment Title</th>
+                                <th>Track</th>
+                                <th>Date & Time</th>
+                                <th>Score</th>
+                                <th>Percentage</th>
+                                <th>Letter Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-table-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 6: PLACEMENT ELIGIBILITY TRACKER -->
+        <!-- ======================================================== -->
+        <section id="tab-eligibility" class="tab-pane hidden">
+            <div class="section-header">
+                <div>
+                    <h2>Placement Eligibility Tracker</h2>
+                    <p class="text-muted">Real-time candidate evaluation against active campus recruitment criteria</p>
+                </div>
+            </div>
+
+            <!-- Personalized Student Status Banner -->
+            <div class="candidate-criteria-banner">
+                <div class="banner-col">
+                    <span class="banner-lbl">Candidate:</span>
+                    <strong id="elig-student-name">Arun Kumar</strong>
+                </div>
+                <div class="banner-col">
+                    <span class="banner-lbl">Academic CGPA:</span>
+                    <strong id="elig-student-cgpa">8.75</strong>
+                </div>
+                <div class="banner-col">
+                    <span class="banner-lbl">Active Backlogs:</span>
+                    <strong id="elig-student-backlogs">0</strong>
+                </div>
+                <div class="banner-col">
+                    <span class="banner-lbl">Portal Test Average:</span>
+                    <strong id="elig-student-avg">85.0%</strong>
+                </div>
+            </div>
+
+            <!-- Company Drives Eligibility Grid -->
+            <div id="eligibility-cards-container" class="drives-grid">
+                <!-- Populated dynamically -->
+            </div>
+
+            <!-- Interactive What-If Simulator -->
+            <div class="card what-if-card">
+                <div class="card-header">
+                    <h3>🔮 Hypothetical 'What-If' Eligibility Simulator</h3>
+                    <p class="text-muted">Test which companies you would be eligible for under different academic scenarios (Demonstrating Method Overloading)</p>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whatif-cgpa">Simulated CGPA</label>
+                        <input type="number" id="whatif-cgpa" class="form-control" step="0.1" min="0" max="10" value="7.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="whatif-backlogs">Simulated Backlogs</label>
+                        <input type="number" id="whatif-backlogs" class="form-control" min="0" value="0">
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: flex-end;">
+                        <button class="btn btn-primary btn-block" onclick="app.runWhatIfSimulator()">Simulate Eligibility</button>
+                    </div>
+                </div>
+                <div id="whatif-results-box" class="whatif-results hidden">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 7: OOP VIVA KNOWLEDGE HUB -->
+        <!-- ======================================================== -->
+        <section id="tab-oopguide" class="tab-pane hidden">
+            <div class="section-header">
+                <div>
+                    <h2>Java OOP Concepts — Viva Examination Guide</h2>
+                    <p class="text-muted">Direct mapping of Object-Oriented principles implemented in this application for your viva</p>
+                </div>
+            </div>
+
+            <div class="oop-cards-container">
+                <!-- Encapsulation Card -->
+                <div class="card oop-concept-card">
+                    <div class="oop-badge">OOP Pillar 1</div>
+                    <h3>Encapsulation</h3>
+                    <p class="concept-def">Wrapping data (attributes) and code acting on data (methods) together as a single unit, keeping fields private and controlling access through getters/setters.</p>
+                    <div class="concept-impl">
+                        <strong>Project Classes:</strong> <code>Student</code>, <code>User</code>, <code>Question</code>, <code>Result</code>
+                        <ul>
+                            <li>All class attributes are declared <code>private</code> (e.g., <code>private double cgpa;</code>).</li>
+                            <li>Mutator methods enforce integrity: <code>setCgpa(double cgpa)</code> throws an <code>IllegalArgumentException</code> if CGPA is outside <code>0.0 - 10.0</code>.</li>
+                            <li>Score tracking is encapsulated inside <code>student.updatePerformance(score)</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Inheritance Card -->
+                <div class="card oop-concept-card">
+                    <div class="oop-badge">OOP Pillar 2</div>
+                    <h3>Inheritance</h3>
+                    <p class="concept-def">The mechanism by which one class acquires the properties and behaviors of a parent class ('is-a' relationship) promoting code reusability.</p>
+                    <div class="concept-impl">
+                        <strong>Project Hierarchy:</strong>
+                        <ul>
+                            <li><code>User</code> (Parent) &rarr; <code>Student</code> (Child), <code>Admin</code> (Child).</li>
+                            <li><code>Question</code> (Parent) &rarr; <code>AptitudeQuestion</code>, <code>LogicalQuestion</code>, <code>TechnicalQuestion</code>.</li>
+                            <li>Child classes invoke parent constructor via <code>super(...)</code> and inherit shared fields (name, email, questionText, marks).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Polymorphism Card -->
+                <div class="card oop-concept-card">
+                    <div class="oop-badge">OOP Pillar 3</div>
+                    <h3>Polymorphism (Runtime & Compile-Time)</h3>
+                    <p class="concept-def">The ability of an entity to take more than one form. Implemented via Dynamic Method Dispatch (Overriding) and Method Overloading.</p>
+                    <div class="concept-impl">
+                        <strong>Project Implementations:</strong>
+                        <ul>
+                            <li><strong>Runtime Polymorphism (Overriding):</strong> In <code>MockTestService</code>, <code>question.evaluateAnswer(chosen)</code> is invoked on the base <code>Question</code> reference, executing specialized subclass logic at runtime.</li>
+                            <li><strong>Compile-Time Polymorphism (Overloading):</strong> <code>PlacementDrive.isEligible(...)</code> is overloaded: one takes <code>Student student</code>, while another takes <code>(double cgpa, int backlogs)</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Abstraction Card -->
+                <div class="card oop-concept-card">
+                    <div class="oop-badge">OOP Pillar 4</div>
+                    <h3>Abstraction & Interfaces</h3>
+                    <p class="concept-def">Hiding implementation details and showing only essential features to the outside world through abstract classes and interfaces.</p>
+                    <div class="concept-impl">
+                        <strong>Project Implementations:</strong>
+                        <ul>
+                            <li><code>abstract class User</code> defines <code>public abstract String getRoleDescription();</code></li>
+                            <li><code>abstract class Question</code> defines <code>public abstract String getCategory();</code></li>
+                            <li><code>interface Evaluatable</code> defines contract for question checking.</li>
+                            <li><code>interface Scorable</code> defines contract for percentage and grading.</li>
+                            <li><code>interface Trackable</code> defines contract for placement eligibility.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Constructors & Chaining -->
+                <div class="card oop-concept-card">
+                    <div class="oop-badge">Core Java Concept</div>
+                    <h3>Constructors & Constructor Chaining</h3>
+                    <p class="concept-def">Special methods used to initialize objects. Constructor chaining ensures parent class state is initialized before child extensions.</p>
+                    <div class="concept-impl">
+                        <strong>Project Implementations:</strong>
+                        <ul>
+                            <li><code>Student</code> constructor invokes <code>super(name, email, password, "STUDENT")</code>.</li>
+                            <li><code>TechnicalQuestion</code> constructor calls <code>super(...)</code> with base question fields before assigning <code>this.programmingLanguage</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Exception Handling -->
+                <div class="card oop-concept-card">
+                    <div class="oop-badge">Robustness</div>
+                    <h3>Custom Exceptions & Global Handling</h3>
+                    <p class="concept-def">Graceful error recovery and unified error messaging across all API layers.</p>
+                    <div class="concept-impl">
+                        <strong>Project Implementations:</strong>
+                        <ul>
+                            <li><code>ValidationException</code> and <code>ResourceNotFoundException</code> extend <code>RuntimeException</code>.</li>
+                            <li><code>@RestControllerAdvice GlobalExceptionHandler</code> formats clean HTTP responses (400, 404, 500).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 8: ADMIN DASHBOARD (QUESTION & DRIVE MANAGEMENT) -->
+        <!-- ======================================================== -->
+        <section id="tab-admin" class="tab-pane hidden">
+            <div class="section-header">
+                <div>
+                    <h2>Placement Officer Admin Console</h2>
+                    <p class="text-muted">Manage Question Bank, Recruitment Drives, and Monitor Student Metrics</p>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="app.openAddQuestionModal()">➕ Add New Question</button>
+                    <button class="btn btn-outline" onclick="app.openAddDriveModal()">🏢 Add Placement Drive</button>
+                </div>
+            </div>
+
+            <!-- Admin Key Stats Row -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue">📚</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="adm-total-questions">16</span>
+                        <span class="stat-label">Total Questions</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-green">👨‍🎓</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="adm-total-students">3</span>
+                        <span class="stat-label">Registered Students</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-purple">📝</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="adm-total-tests">2</span>
+                        <span class="stat-label">Tests Evaluated</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-orange">🏢</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="adm-total-drives">5</span>
+                        <span class="stat-label">Placement Drives</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Bank Management Table -->
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header flex-between">
+                    <div>
+                        <h3>Question Bank Management</h3>
+                        <p class="text-muted">View, edit, or remove questions from the assessment pool</p>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Track</th>
+                                <th>Sub-Topic</th>
+                                <th>Question Text</th>
+                                <th>Correct</th>
+                                <th>Difficulty</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adm-questions-table">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Placement Drives Management Table -->
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header flex-between">
+                    <div>
+                        <h3>Active Campus Recruitment Drives</h3>
+                        <p class="text-muted">Manage companies and eligibility thresholds</p>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Job Role</th>
+                                <th>Package (LPA)</th>
+                                <th>Min CGPA</th>
+                                <th>Max Backlogs</th>
+                                <th>Min Test %</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adm-drives-table">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: ADD / EDIT QUESTION -->
+    <!-- ======================================================== -->
+    <div id="question-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-q-title">Add New Question to Bank</h3>
+                <span class="modal-close" onclick="app.closeModal('question-modal')">&times;</span>
+            </div>
+            <form id="question-form" onsubmit="app.handleSaveQuestion(event)">
+                <input type="hidden" id="form-q-id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-q-category">Category Track *</label>
+                        <select id="form-q-category" class="form-control" required>
+                            <option value="APTITUDE">Quantitative Aptitude</option>
+                            <option value="LOGICAL">Logical Reasoning</option>
+                            <option value="TECHNICAL">Technical Java & OOP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-q-sub">Sub-Topic / Topic *</label>
+                        <input type="text" id="form-q-sub" class="form-control" required placeholder="e.g. Polymorphism or Percentages">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="form-q-text">Question Text *</label>
+                    <textarea id="form-q-text" class="form-control" rows="3" required placeholder="Type the question statement..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-q-optA">Option A *</label>
+                        <input type="text" id="form-q-optA" class="form-control" required placeholder="Option A text">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-q-optB">Option B *</label>
+                        <input type="text" id="form-q-optB" class="form-control" required placeholder="Option B text">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-q-optC">Option C *</label>
+                        <input type="text" id="form-q-optC" class="form-control" required placeholder="Option C text">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-q-optD">Option D *</label>
+                        <input type="text" id="form-q-optD" class="form-control" required placeholder="Option D text">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-q-correct">Correct Option *</label>
+                        <select id="form-q-correct" class="form-control" required>
+                            <option value="A">Option A</option>
+                            <option value="B">Option B</option>
+                            <option value="C">Option C</option>
+                            <option value="D">Option D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-q-difficulty">Difficulty Level</label>
+                        <select id="form-q-difficulty" class="form-control">
+                            <option value="EASY">EASY</option>
+                            <option value="MEDIUM" selected>MEDIUM</option>
+                            <option value="HARD">HARD</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-q-marks">Marks</label>
+                        <input type="number" id="form-q-marks" class="form-control" min="1" value="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="form-q-explanation">Explanation / Solution Steps</label>
+                    <textarea id="form-q-explanation" class="form-control" rows="2" placeholder="Explain why the option is correct..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="app.closeModal('question-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Question</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: ADD PLACEMENT DRIVE -->
+    <!-- ======================================================== -->
+    <div id="drive-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Placement Recruitment Drive</h3>
+                <span class="modal-close" onclick="app.closeModal('drive-modal')">&times;</span>
+            </div>
+            <form id="drive-form" onsubmit="app.handleSaveDrive(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-d-company">Company Name *</label>
+                        <input type="text" id="form-d-company" class="form-control" required placeholder="e.g. Adobe Systems">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-d-role">Job Role *</label>
+                        <input type="text" id="form-d-role" class="form-control" required placeholder="e.g. Member of Technical Staff">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-d-pkg">Package (LPA) *</label>
+                        <input type="number" id="form-d-pkg" class="form-control" step="0.5" min="1" required placeholder="e.g. 15.0">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-d-cgpa">Minimum CGPA *</label>
+                        <input type="number" id="form-d-cgpa" class="form-control" step="0.1" min="0" max="10" required placeholder="e.g. 7.5">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-d-backlogs">Maximum Allowed Backlogs *</label>
+                        <input type="number" id="form-d-backlogs" class="form-control" min="0" required value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-d-score">Minimum Mock Test % *</label>
+                        <input type="number" id="form-d-score" class="form-control" min="0" max="100" required value="65">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-d-date">Drive Date *</label>
+                        <input type="date" id="form-d-date" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="form-d-desc">Job Description & Hiring Criteria</label>
+                    <textarea id="form-d-desc" class="form-control" rows="2" placeholder="Details about interview rounds and expectations..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="app.closeModal('drive-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Recruitment Drive</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>College Placement Preparation Portal &copy; 2026 | Built with Java 17, Spring Boot, MySQL & Vanilla JS</p>
+        <p class="text-muted">Demonstrating Encapsulation, Inheritance, Polymorphism, Abstraction, Interfaces & Method Overriding</p>
+    </footer>
+
+    <!-- Frontend Script -->
+    <script src="js/app.js"></script>
+</body>
+</html>
